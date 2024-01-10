@@ -88,3 +88,74 @@ model TwoFactorConfirmation {
 
   @@unique([userId])
 }
+
+
+model Menu {
+  id          Int      @id @default(autoincrement())
+  menuTitle        String
+  path        String?
+  icon        String
+  position        Int 
+  status        Int @default(1)
+  component        String?
+  isParent      Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  parents   MenuHierarchy[] @relation("Parent")
+  childs   MenuHierarchy[] @relation("Descendant")
+  parent_id Int? 
+  parent   Menu?    @relation("Children", fields: [parent_id], references: [id])
+  children Menu[]   @relation("Children")
+}
+
+model MenuHierarchy {
+  //  id          String  @id @default(cuid())
+  parent_id   Int
+  child_id Int
+  parent     Menu @relation("Parent", fields: [parent_id], references: [id], onDelete: Cascade)
+  child   Menu @relation("Descendant", fields: [child_id], references: [id], onDelete: Cascade)
+  @@id([parent_id, child_id])
+}
+
+model RoleMenu {
+  id          Int      @id @default(autoincrement())
+  menuTitle        String
+  role        String
+  path        String?
+  icon        String
+  position        Int 
+  status        Int @default(1)
+  component        String?
+  isParent      Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  parents   RoleMenuHierarchy[] @relation("Parent")
+  childs   RoleMenuHierarchy[] @relation("Descendant")
+  parent_id Int? 
+  parent   RoleMenu?    @relation("Children", fields: [parent_id], references: [id])
+  children RoleMenu[]   @relation("Children")
+}
+
+model RoleMenuHierarchy {
+  //  id          String  @id @default(cuid())
+  parent_id   Int
+  child_id Int
+  parent     RoleMenu @relation("Parent", fields: [parent_id], references: [id], onDelete: Cascade)
+  child   RoleMenu @relation("Descendant", fields: [child_id], references: [id], onDelete: Cascade)
+  @@id([parent_id, child_id])
+}
+
+
+model Permission {
+  id String @id @default(cuid())
+  permission Int
+  action String 
+  controller Int
+  actionName String 
+  controllerName String
+  position Int
+  status Int @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
