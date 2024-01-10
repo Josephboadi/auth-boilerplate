@@ -1,4 +1,5 @@
 var nodemailer = require("nodemailer");
+
 const sendEmail = async (options: any) => {
   const transporter = nodemailer.createTransport({
     host: process.env.SMPT_HOST,
@@ -9,6 +10,9 @@ const sendEmail = async (options: any) => {
       pass: process.env.SMPT_PASSWORD,
     },
   });
+
+  // const emailHtml = options.html && render(options.html);
+
   const mailOptions = {
     from: process.env.SMPT_MAIL,
     to: options.to,
@@ -18,7 +22,7 @@ const sendEmail = async (options: any) => {
     attachments: options.attachments,
   };
 
-  console.log("Mail Options===========================, ", mailOptions);
+  // console.log("Mail Options===========================, ", mailOptions);
   await transporter.sendMail(mailOptions);
 };
 
